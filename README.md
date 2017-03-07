@@ -8,6 +8,7 @@ Este é o repositório onde os trabalhos/programas de Paradigmas de Programaçã
 - Primeira Atividade
 - Segunda Atividade
 - ...
+
 ***
 
 ## Atividades Espontâneas
