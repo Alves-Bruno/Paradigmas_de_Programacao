@@ -29,6 +29,7 @@ def isEspace(char):
 def lenEspaces(string):
   return len(list(filter(isEspace, string)))
 
+
 #5. Escreva uma função que, dada uma lista de números, calcule
 #3*n**2 + 2/n + 1 para cada número n da lista. Defina uma
 # função auxiliar para ajudar neste exercício.
@@ -69,8 +70,13 @@ def lista_par(lista):
 #está contido na string. O resultado deve ser `True` ou `False`.
 #Você não deve usar o operador `in`. Defina uma função auxiliar
 #para ajudar neste exercício.
+
 def charFound(c, s):
-  return len(list(filter(lambda x: x == c, s))) > 0
+
+  def aux(charc):
+    return charc == c
+
+  return len(list(filter(aux, s))) > 0
 
 #10. Escreva uma função que receba uma lista de strings e retorne uma
 #nova lista com adição de marcações HTML (p.ex.: `<B>` e `</B>`) antes
