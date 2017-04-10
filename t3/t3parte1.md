@@ -2,7 +2,7 @@
 
 #### Consulta: ?- avo(joao,Y)
 | Prolog trace output | Descrição |
-|:---------:| :---------: |
+| ---------:| :--------- |
 | ?- avo(joao,Y) |  Chama avo(). |
 |  Call: (7) avo(joao, _G2216) ? creep | Realiza a consulta, subistituindo Y por um valor único. |
 |  Call: (8) pai(joao, _G2292) ? creep | Testa a primeira condição. Tenta encontrar um Y que seja filho de joao. | 
@@ -16,7 +16,7 @@
 
 #### Consulta: ?- avo(roberto,Y).
 | Prolog trace output | Descrição |
-|:---------:| :---------: |
+| ---------:| :--------- |
 | ?- avo(roberto,Y).| Chama avo(). |
 |  Call: (7) avo(roberto, _G3178) ? creep| Realiza a consulta, subistituindo Y por um valor único. |
 |   Call: (8) pai(roberto, _G3254) ? creep| Testa a primeira condição. Tenta encontrar um Y que seja filho de roberto. | 
@@ -40,7 +40,7 @@
 
 #### Consulta: ?- azulejos(120, A).
 | Prolog trace output | Descrição |
-|:---------:| :---------: |
+| ---------:| :--------- |
 | ?- azulejos(120, A).| Chama azulejos(). |
 |   Call: (7) azulejos(120, _G2218) ? creep|  Realiza a consulta, subistituindo A por um valor único. |
 |   Call: (8) 120>0 ? creep| Chama a função para verifcar se Na é maior que 0. |
@@ -91,7 +91,7 @@ fat(N,F) :-
 ```
 
 | Prolog trace output | Descrição |
-|:---------:| :---------: |
+| ---------:| :--------- |
 | ?- fat(3, A).| Chama fat(). |
 |   Call: (7) fat(3, _G2218) ? creep| Realiza a consulta, subistituindo A por um valor único. | 
 |   Call: (8) 3>0 ? creep| Chama a função para verifcar se N é maior que 0 (N = 3). |
