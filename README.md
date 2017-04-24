@@ -15,9 +15,9 @@ Este é o repositório onde os trabalhos/programas de Paradigmas de Programaçã
 
 | Atividade | Descrição | Repositório |
 |:---------:| --------- |:-------:|
-|Conhecendo Python|Entendendo Python + Resolução de exercícios.|[Aqui](python_class01).|
-|PONG|Simulação do jogo PONG.|[Aqui](pong_in_python).|
-|JOGO|Implementação do jogo HOW FAST YOU CODE?.|[Aqui](HFYT).|
+|Conhecendo Python|Entendendo Python + Resolução de exercícios.|[Aqui](extras/python_class01).|
+|PONG|Simulação do jogo PONG.|[Aqui](extras/pong_in_python).|
+|JOGO|Implementação do jogo HOW FAST YOU CODE?.|[Aqui](extras/HFYT).|
 
 
 ***
