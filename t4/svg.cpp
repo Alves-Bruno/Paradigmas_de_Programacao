@@ -187,7 +187,7 @@ void SVG_file_open(int altura, int largura){
 	SVG_file << "<!DOCTYPE html>\n" << "<html>\n" << "<body>\n";
 
 	SVG_file << "<svg height=\"" << altura << "\" width=\"" << largura << "\">\n";
-	SVG_file << "<rect width=\"" << altura << "\" height=\"" << largura << "\" style=\"fill:rgb(255,255,255);stroke-width:3;stroke:rgb(0,0,0)\" />\n";
+	SVG_file << "  <rect width=\"" << altura << "\" height=\"" << largura << "\" style=\"fill:rgb(255,255,255);stroke-width:3;stroke:rgb(0,0,0)\" />\n";
 
 }
 
