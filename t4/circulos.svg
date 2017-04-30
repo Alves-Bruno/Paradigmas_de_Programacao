@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<body>
+<svg height="1000" width="1000">
+<rect width="1000" height="1000" style="fill:rgb(255,255,255);stroke-width:3;stroke:rgb(0,0,0)" />
+  <line x1="0" y1="900" x2="1000" y2="900" style="stroke:rgb(0,255,0);stroke-width:2" />
+  <circle cx="400" cy="390" r="10" stroke="black" stroke-width="3" fill="black" />
+  <circle cx="655" cy="250" r="10" stroke="black" stroke-width="3" fill="black" />
+  <circle cx="910" cy="390" r="10" stroke="black" stroke-width="3" fill="black" />
+  <line x1="400" y1="390" x2="655" y2="250" style="stroke:rgb(0,0,0);stroke-width:2" />
+  <line x1="655" y1="250" x2="910" y2="390" style="stroke:rgb(0,0,0);stroke-width:2" />
+  <line x1="910" y1="390" x2="400" y2="390" style="stroke:rgb(0,0,0);stroke-width:2" />
+  <circle cx="400" cy="390" r="5" stroke="black" stroke-width="3" fill="black" />
+  <circle cx="400" cy="900" r="5" stroke="black" stroke-width="3" fill="black" />
+  <circle cx="910" cy="390" r="5" stroke="black" stroke-width="3" fill="black" />
+  <circle cx="910" cy="900" r="5" stroke="black" stroke-width="3" fill="black" />
+  <line x1="400" y1="390" x2="910" y2="390" style="stroke:rgb(0,0,0);stroke-width:2" />
+  <line x1="910" y1="390" x2="910" y2="900" style="stroke:rgb(0,0,0);stroke-width:2" />
+  <line x1="910" y1="900" x2="400" y2="900" style="stroke:rgb(0,0,0);stroke-width:2" />
+  <line x1="400" y1="900" x2="400" y2="390" style="stroke:rgb(0,0,0);stroke-width:2" />
+  <circle cx="500" cy="700" r="5" stroke="black" stroke-width="3" fill="black" />
+  <circle cx="500" cy="900" r="5" stroke="black" stroke-width="3" fill="black" />
+  <circle cx="700" cy="700" r="5" stroke="black" stroke-width="3" fill="black" />
+  <circle cx="700" cy="900" r="5" stroke="black" stroke-width="3" fill="black" />
+  <line x1="500" y1="700" x2="700" y2="700" style="stroke:rgb(0,0,0);stroke-width:2" />
+  <line x1="700" y1="700" x2="700" y2="900" style="stroke:rgb(0,0,0);stroke-width:2" />
+  <line x1="700" y1="900" x2="500" y2="900" style="stroke:rgb(0,0,0);stroke-width:2" />
+  <line x1="500" y1="900" x2="500" y2="700" style="stroke:rgb(0,0,0);stroke-width:2" />
+  <circle cx="30" cy="540" r="5" stroke="black" stroke-width="3" fill="black" />
+  <circle cx="30" cy="627.5" r="5" stroke="black" stroke-width="3" fill="black" />
+  <circle cx="117.5" cy="540" r="5" stroke="black" stroke-width="3" fill="black" />
+  <circle cx="117.5" cy="627.5" r="5" stroke="black" stroke-width="3" fill="black" />
+  <line x1="30" y1="540" x2="117.5" y2="540" style="stroke:rgb(0,0,0);stroke-width:2" />
+  <line x1="117.5" y1="540" x2="117.5" y2="627.5" style="stroke:rgb(0,0,0);stroke-width:2" />
+  <line x1="117.5" y1="627.5" x2="30" y2="627.5" style="stroke:rgb(0,0,0);stroke-width:2" />
+  <line x1="30" y1="627.5" x2="30" y2="540" style="stroke:rgb(0,0,0);stroke-width:2" />
+  <circle cx="30" cy="758.75" r="10" stroke="black" stroke-width="3" fill="black" />
+  <circle cx="117.5" cy="758.75" r="10" stroke="black" stroke-width="3" fill="black" />
+  <circle cx="51.875" cy="605.625" r="5" stroke="red" stroke-width="3" fill="red" />
+  <circle cx="95.625" cy="605.625" r="5" stroke="red" stroke-width="3" fill="red" />
+  <circle cx="30" cy="890" r="10" stroke="black" stroke-width="3" fill="black" />
+  <circle cx="117.5" cy="890" r="10" stroke="black" stroke-width="3" fill="black" />
+  <circle cx="73.75" cy="627.5" r="5" stroke="black" stroke-width="3" fill="black" />
+  <circle cx="73.75" cy="802.5" r="5" stroke="black" stroke-width="3" fill="black" />
+  <line x1="73.75" y1="627.5" x2="73.75" y2="802.5" style="stroke:rgb(0,0,0);stroke-width:2" />
+  <line x1="73.75" y1="802.5" x2="30" y2="890" style="stroke:rgb(0,0,0);stroke-width:2" />
+  <line x1="73.75" y1="802.5" x2="117.5" y2="890" style="stroke:rgb(0,0,0);stroke-width:2" />
+  <line x1="73.75" y1="627.5" x2="30" y2="758.75" style="stroke:rgb(0,0,0);stroke-width:2" />
+  <line x1="73.75" y1="627.5" x2="117.5" y2="758.75" style="stroke:rgb(0,0,0);stroke-width:2" />
+  <line x1="51.875" y1="605.625" x2="95.625" y2="605.625" style="stroke:rgb(255,0,0);stroke-width:2" />
+  <circle cx="51.875" cy="561.875" r="10" stroke="green" stroke-width="3" fill="green" />
+  <circle cx="95.625" cy="561.875" r="10" stroke="green" stroke-width="3" fill="green" />
+</svg>
+</body>
+</html>

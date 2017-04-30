@@ -8,6 +8,9 @@ Este é o repositório onde os trabalhos/programas de Paradigmas de Programaçã
 | TRABALHO | Descrição | Arquivo |
 |:---------:| --------- |:-------:|
 |t1|Programação funcional com python.|[Descrição](https://github.com/AndreaInfUFSM/elc117-2017a/blob/master/trabalhos/t1/README.md), [Pasta do Trabalho](t1)|
+|t2| List comprehension em Python.[Descrição](https://github.com/AndreaInfUFSM/elc117-2017a/tree/master/trabalhos/t2).|[Pasta do Trabalho](t2)|
+|t3| Prolog .[Descrição](https://github.com/AndreaInfUFSM/elc117-2017a/tree/master/trabalhos/t3).|[Pasta do Trabalho](t3)|
+|t4|Classes e objetos em C++.[Descrição](https://github.com/AndreaInfUFSM/elc117-2017a/tree/master/trabalhos/t4)|[Pasta do Trabalho](t4)|
 
 ***
 
