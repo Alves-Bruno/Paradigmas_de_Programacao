@@ -13,6 +13,7 @@ Este é o repositório onde os trabalhos/programas de Paradigmas de Programaçã
 |t4|Classes e objetos em C++.[Descrição](https://github.com/AndreaInfUFSM/elc117-2017a/tree/master/trabalhos/t4)|[Pasta do Trabalho](t4)|
 |t5|Containers e algoritmos em C++.[Descrição](https://github.com/AndreaInfUFSM/elc117-2017a/tree/master/trabalhos/t5)|[Pasta do Trabalho](t5)|
 |t6|Comemoração do Dia das Mães em C++.[Descrição](https://github.com/AndreaInfUFSM/elc117-2017a/tree/master/trabalhos/t6)|[Pasta do Trabalho](t6)|
+|t7|Sorteio de brindes para participantes de evento.[Descrição](https://github.com/AndreaInfUFSM/elc117-2017a/tree/master/trabalhos/t7)|[Pasta do Trabalho](t7)|
 ***
 
 ## Atividades Espontâneas
