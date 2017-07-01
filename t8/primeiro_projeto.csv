@@ -1,0 +1,9 @@
+project_title,text,primeiro_projeto.csv,Primeiro Projeto
+set,text,web_page_name,Trabson
+set,text,page_title,Trabson
+add,text,name,Name
+add,text,age,Age
+add,radio,gender,Gender
+radio_bt,Male,!@#$%null,!@#$%null
+radio_bt,Female,!@#$%null,!@#$%null
+radio_bt,Others,!@#$%null,!@#$%null
