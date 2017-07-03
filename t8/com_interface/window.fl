@@ -1,0 +1,167 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0303 
+header_name {.h} 
+code_name {.cxx}
+class UserInterface {open
+} {
+  Function {UserInterface()} {open
+  } {
+    Fl_Window w {
+      label {Code Generator} open
+      protected xywh {265 103 535 565} type Double color 48 visible
+    } {
+      Fl_Input inputLabel {
+        label {Label:}
+        protected xywh {85 111 360 24}
+      }
+      Fl_Input inputName {
+        label {Name:}
+        protected xywh {85 141 360 24}
+      }
+      Fl_Button btnClear {
+        label Clear
+        protected xywh {35 245 100 25}
+      }
+      Fl_Button btnUpdate {
+        label Update
+        protected xywh {159 245 100 25}
+      }
+      Fl_Button btnDelete {
+        label Delete
+        protected xywh {280 245 100 25}
+      }
+      Fl_Button btnInsert {
+        label Insert
+        protected xywh {397 245 100 25}
+      }
+      Fl_Browser browser {
+        protected xywh {35 286 470 243} type Hold
+      }
+      Fl_Choice chooser {
+        label {Type: } open
+        protected xywh {85 170 360 25} down_box BORDER_BOX
+      } {
+        MenuItem textl_bt {
+          label {Text Input}
+          xywh {0 0 36 20}
+        }
+        MenuItem radio_bt {
+          label {Radio Input}
+          xywh {0 0 36 20}
+        }
+      }
+      Fl_Menu_Bar Menu_bar {
+        label Menu_bar open
+        xywh {0 0 535 20}
+      } {
+        Submenu Project_submenu {
+          label Project open
+          xywh {0 0 70 20}
+        } {
+          MenuItem NewProject {
+            label {New Project}
+            xywh {0 0 36 20}
+          }
+          MenuItem LoadProject {
+            label {Load Project}
+            protected xywh {0 0 36 20}
+          }
+        }
+        Submenu Code_submenu {
+          label Code open
+          xywh {0 0 70 20}
+        } {
+          MenuItem Generate_Code_bt {
+            label {Generate Code}
+            xywh {0 0 36 20}
+          }
+          MenuItem Set_title {
+            label {Set Title}
+            xywh {0 0 36 20}
+          }
+          MenuItem Insert_Radio_bt {
+            label {Insert Radio Button}
+            xywh {0 0 36 20}
+          }
+        }
+        Submenu Help_bt {
+          label Help open
+          xywh {0 0 70 20}
+        } {}
+      }
+      Fl_Output Title_Project {
+        xywh {130 40 295 50} box GTK_DOWN_BOX color 47 labelfont 1 labelsize 25 labelcolor 8 textfont 1 textsize 25
+      }
+    }
+    Fl_Window NewProjectWindow {
+      label {New Project} open
+      xywh {375 332 390 165} type Double visible
+    } {
+      Fl_Input ProjectName_input {
+        label {Project Name:  }
+        xywh {140 22 225 28}
+      }
+      Fl_Input ProjectFile_input {
+        label {Project File:      }
+        xywh {140 56 225 26}
+      }
+      Fl_Button New_Pro_OK_bt {
+        label OK
+        xywh {60 110 130 35}
+      }
+      Fl_Button New_Pro_Cancel_bt {
+        label CANCEL
+        xywh {200 110 130 35}
+      }
+    }
+    Fl_Window Radio_bt_Window {open
+      xywh {402 281 340 180} type Double visible
+    } {
+      Fl_Input Radio_bt_1 {
+        label {Radio button 1:}
+        xywh {130 17 180 28}
+      }
+      Fl_Input Radio_bt_2 {
+        label {Radio button 2:}
+        xywh {130 51 180 27}
+      }
+      Fl_Input Radio_bt_3 {
+        label {Radio button 3:}
+        xywh {130 87 180 29}
+      }
+      Fl_Button Radio_Update_bt {
+        label Update
+        xywh {50 130 110 35}
+      }
+      Fl_Button Radio_cancel_bt {
+        label Cancel
+        xywh {175 130 110 35}
+      }
+      Fl_Button insert_bt_Radio {
+        label Insert selected
+        xywh {40 130 125 40}
+      }
+    }
+    Fl_Window Title_window {
+      label {Set Title} open
+      xywh {424 258 320 165} type Double visible
+    } {
+      Fl_Input Web_page_name {
+        label {Web Page Name:}
+        xywh {140 24 160 31}
+      }
+      Fl_Input Web_page_title {
+        label {Web Page Title:   }
+        xywh {140 62 160 28}
+      }
+      Fl_Button Title_save_bt {
+        label Save
+        xywh {70 110 90 40}
+      }
+      Fl_Button Title_cancel_bt {
+        label Cancel
+        xywh {175 110 90 40}
+      }
+    }
+  }
+} 

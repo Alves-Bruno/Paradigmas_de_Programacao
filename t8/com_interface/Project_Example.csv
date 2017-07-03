@@ -1,0 +1,6 @@
+project_title,text,Project_Example.csv,Example
+set,text,web_page_name,Example
+set,text,page_title,Example
+add,text,Name,Name
+add,radio,Gender,Gender
+radio_bt,Male,Female,#null#

@@ -1,20 +1,17 @@
-//
-//  main.cpp
-//  gerador_de_aplicacao
-//
-//  Created by Bruno Alves on 24/06/17.
-//  Copyright © 2017 Bruno Alves. All rights reserved.
-//
-
-#include <iostream>
-#include <vector>
-#include <iterator>
+#include <string>
+#include <stdexcept>
 #include <algorithm>
+#include <iterator>
+#include <FL/fl_ask.H>
+#include <vector>
+#include <iostream>
+#include "window.h"
+#include <FL/Fl_File_Chooser.H>
+
 #include <thread>
 #include <fstream>
 #include <sstream>
 #include <mutex>          // std::mutex
-#include <string>
 
 void delSpaces(std::string &str)
 {
@@ -22,43 +19,43 @@ void delSpaces(std::string &str)
 }
 
 class CSV {
-    
+
 private:
-    
+
 //    | Comando | Tipo | Label | Nome |
 
     std::string Command;
     std::string Type;
     std::string Label;
     std::string Name;
-    
+
 public:
-    
+
     CSV(std::string Command, std::string Type, std::string Label, std::string Name){
-   
+
         this->Command = Command;
         this->Type = Type;
         this->Label = Label;
         this->Name = Name;
     }
-    
+
     std::string getCommand(){
         return Command;
     }
-    
+
     std::string getType(){
         return Type;
     }
-    
+
     std::string getLabel(){
         return Label;
     }
-    
+
     std::string getName(){
         return Name;
     }
-    
-    
+
+
 };
 
 
@@ -66,12 +63,13 @@ public:
 class CSV_Editor {
 
 private:
-    
+
     std::vector<CSV*> CSVvector;
     std::ofstream CSV_file;
-    
+    int Total_lines = 0;
+
 public:
-    
+
 
     void free( void ){
 
@@ -82,8 +80,10 @@ public:
      void insert_line(std::string Command, std::string Type, std::string Label, std::string Name){
         CSV *csvType = new CSV(Command, Type, Label, Name);
         CSVvector.push_back(csvType);
+        Total_lines++;
+
     }
-    
+
     void list_commands( void ){
         int count = 1;
         for (auto i = CSVvector.begin(); i != CSVvector.end(); i++){
@@ -94,40 +94,40 @@ public:
     }
 
     void delete_line(int line_number){
-        
+
         if(line_isValid(line_number) == false)
             return;
-        
+
         delete CSVvector[line_number-1];
         CSVvector.erase(CSVvector.begin()+(line_number-1));
-        
-    
+
+
     }
-    
+
     void edit_entire_line(int line_number, std::string Command, std::string Type, std::string Label, std::string Name){
-        
+
         if(line_isValid(line_number) == false)
             return;
         CSV *csvType = new CSV(Command, Type, Label, Name);
         delete_line(line_number);
         CSVvector.insert(CSVvector.begin() + (line_number-1), csvType);
-        
-    
+
+
     }
-    
+
     void edit_line_element(int line_number, int element, std::string new_element){
-        
+
         if(line_isValid(line_number) == false)
             return;
-        
+
         switch(element){
-        
+
             case 1: edit_entire_line(line_number, new_element, CSVvector.at(line_number-1)->getType(), CSVvector.at(line_number-1)->getLabel(), CSVvector.at(line_number-1)->getName()); break;
             case 2: edit_entire_line(line_number,CSVvector.at(line_number-1)->getCommand(), new_element, CSVvector.at(line_number-1)->getLabel(), CSVvector.at(line_number-1)->getName()); break;
             case 3: edit_entire_line(line_number,CSVvector.at(line_number-1)->getCommand(), CSVvector.at(line_number-1)->getType(), new_element, CSVvector.at(line_number-1)->getName()); break;
             case 4: edit_entire_line(line_number,CSVvector.at(line_number-1)->getCommand(), CSVvector.at(line_number-1)->getType(), CSVvector.at(line_number-1)->getLabel(), new_element); break;
             default: std::cout << "ERROR: Invalid element number. Operation could not be done."  << std::endl;
-            
+
         }
     }
 
@@ -136,7 +136,7 @@ public:
     	return CSVvector.at(2)->getName();
 
     }
-    
+
     std::string get_WebPage_name( void ){
 
       	return CSVvector.at(1)->getName();
@@ -144,14 +144,14 @@ public:
      }
 
     bool line_isValid(int line_number){
-        
+
         if((line_number-1) < 0 || (line_number-1) > CSVvector.size()){
             std::cout << "ERROR: Invalid line number. Operation in [line " << line_number << "] could not be done."  << std::endl;
             return false;
         } else return true;
-    
+
     }
-    
+
     bool save_project(std::string file_name){
 
     	CSV_file.open(file_name.data());
@@ -187,8 +187,8 @@ public:
     		std::getline(linestream, cell[3], ',');
     		CSV *linha = new CSV(cell[0], cell[1] ,cell[2], cell[3]);
     		CSVvector.push_back(linha);
+    		this->Total_lines++;
     	}
-
 
     }
 
@@ -197,8 +197,11 @@ public:
     	return CSVvector.at(line_number-1);
     }
 
-    
-    
+
+    int getTotalLines( void ){
+    	return Total_lines;
+    }
+
 
 };
 
@@ -233,6 +236,7 @@ class Application {
     	CSV_editor->insert_line("project_title", "text",project_file, project_name);
     	CSV_editor->insert_line("set", "text","web_page_name", "");
     	CSV_editor->insert_line("set", "text","page_title", "");
+    	this->save_project();
     }
 
     bool load_project(std::string project_file_name){
@@ -507,13 +511,13 @@ public:
         		   i++;
         		   while(i != CSVvector.end() && (*i)->getCommand() == "radio_bt"){
 
-        			   if((*i)->getType() != "!@#$%null"){
+        			   if((*i)->getType() != "#null#"){
         				   button->insert_RadioButton((*i)->getType());
         			   }
-        			   if((*i)->getLabel() != "!@#$%null"){
+        			   if((*i)->getLabel() != "#null#"){
         				   button->insert_RadioButton((*i)->getLabel());
         			   }
-        			   if((*i)->getName() != "!@#$%null"){
+        			   if((*i)->getName() != "#null#"){
         				   button->insert_RadioButton((*i)->getName());
         			   }
         			   i++;
@@ -527,7 +531,7 @@ public:
 
     bool write_code(){
 
-    	HTML_file.open("HTML/testing_index.html");
+    	HTML_file.open("HTML/index.html");
     	if(!HTML_file.is_open()){
     		return false;
     	}
@@ -742,228 +746,458 @@ public:
 
 };
 
-void command_handler(std::vector<std::string> command, Application *app){
+class Data {
+private:
 
-	switch(command.size()){
+	std::string nome_posto;
+	float preco;
+	std::string tipo_combustivel;
 
-	case 1: {
+public:
+  Data(std::string nome_posto, float preco, std::string tipo_combustivel) {
+    this->nome_posto = nome_posto;
+    this->preco = preco;
+    this->tipo_combustivel = tipo_combustivel;
+  }
+  float getPreco() {
+    return preco;
+  }
+  std::string getPosto() {
+    return nome_posto;
+  }
+  std::string getCombustivel() {
+     return tipo_combustivel;
+   }
+  void setPosto(std::string name) {
+    this->nome_posto = name;
+  }  
+  void setCombustivel(std::string comb) {
+      this->tipo_combustivel = comb;
+    }
+  void setPreco(float preco) {
+    this->preco = preco;
+  }  
 
-		if(command[0] == "list"){
-			(app->get_CSVeditor())->list_commands();
-		}
-		else if(command[0] == "quit" || command[0] == "q"){
-
-			// todo -->> free mem app
-			exit(0);
-		}
-		else if(command[0] == "info"){
-
-			// todo -->> apresentar informações sobre o projeto
-			std::cout << ">> In Project \"" << app->get_ProjectName() << "\", try \"help\" for more informations." << std::endl;
-		}
-		else if(command[0] == "help" || command[0] == "h"){
-
-			std::cout << "Usage: ./main [options] or just ./main [to start a new project.]" << std::endl;
-			std::cout << "Options:\n " << "\t file.csv \t To load a project" << std::endl;
-
-			std::cout << "Commands inside of the program:\n"
-					"\t\n"
-					"\tset page\t--> Sets the web page name.\n"
-					"\tset title\t--> Sets the web page title.\n"
-					"\tlist\t\t--> List the commands, like an project view.\n"
-					"\tinfo\t\t--> Displays some info about the project.\n"
-					"\tquit\t\t--> Exit the program.\n"
-					"\n"
-					"\trm [line_number]\t\t\t--> Removes the line at [line_number].\n"
-					"\tedit [line_number] [element_number]\t--> Edit the element at [element_number] in line indicated.\n"
-					"\n"
-					"\n"
-					"\tadd text [labe] [Name]\t\t--> Adds a text box section in the web page.\n"
-					"\tadd radio [label] [Name] \t--> Adds a radio button section in the web page.\n"
-					"\tgenerate code \t--> Generates the html code.\n"
-					"\n";
-		}
-		else {
-			std::cout << "Command not found, try \"help\" for more information.\n";
-		}
-
-		break;
-	}
-
-	case 2:{
-
-		if(command[0] == "set"){
-
-			if(command[1] == "page"){
-
-				char web_page_name[50];
-				std::cout << "Enter the new web page name: ";
-				std::cin.getline(web_page_name, 50);
-				std::cout << std::endl;
-				std::string str = web_page_name;
-				(app->get_CSVeditor())->edit_line_element(2, 4, str);
-			}
-			else if(command[1] == "title"){
-				char page_title[100];
-				std::cout << "Enter the new page title: ";
-				std::cin.getline(page_title, 100);
-				std::cout << std::endl;
-				std::string str = page_title;
-				(app->get_CSVeditor())->edit_line_element(3, 4, str);
-			}
-		}
-		else if(command[0] == "rm"){
-
-			try {
-
-				int line_number = std::stoi(command[1]);
-				if (line_number == 1 || line_number == 2 || line_number == 3){
-					std::cout << "Error: It is not permitted to delete lines 1, 2, 3." << std::endl;
-					return;
-				}
-				(app->get_CSVeditor())->delete_line(line_number);
-
-			} catch (const std::invalid_argument& ia) {
-				  std::cout << "Error: line_number is invalid. Operation could not be done." << std::endl;
-			}
-		}
-
-		else if(command[0] == "generate" && command[1] == "code"){
-
-			Code_Generator codigo((app->get_CSVeditor())->get_PageTitle(), (app->get_CSVeditor())->get_WebPage_name(), app->get_ProjectFile());
-			codigo.write_code();
-
-		}
-		else {
-			std::cout << "Command not found, try \"help\" for more information.\n";
-		}
-		break;
-	}
-
-	case 3:{
-
-		if(command[0] == "edit"){
-
-			try {
-
-				int line_number = std::stoi(command[1]);
-				int element = std::stoi(command[2]);
-				if (line_number == 1 || line_number == 2 || line_number == 3){
-					std::cout << "Error: It is not permitted to edit lines 1, 2, 3. Try \"set\" modes." << std::endl;
-					return;
-				}
-
-				char element_char[100];
-				std::cout << "Enter the element (string) to be overwritten: ";
-				std::cin.getline(element_char, 100);
-				std::cout << std::endl;
-				std::string str = element_char;
-
-				(app->get_CSVeditor())->edit_line_element(line_number, element, str);
-
-			} catch (const std::invalid_argument& ia) {
-				std::cout << "Error: line_number is invalid. Operation could not be done." << std::endl;
-			}
-
-		}
-		else {
-					std::cout << "Command not found, try \"help\" for more information.\n";
-				}
-		break;
-	}
-
-	case 4: {
-
-		if(command[0] == "add" && command[1] == "text"){
-
-			(app->get_CSVeditor())->insert_line("add", "text", command[2], command[3]);
-		}
-
-		else if(command[0] == "add" && command[1] == "radio"){
-
-			char num_char[20];
-			(app->get_CSVeditor())->insert_line("add", "radio", command[2], command[3]);
-			std::cout << "Enter the number of radio buttons to insert: ";
-			std::cin.getline(num_char, 20);
-			std::cout << std::endl;
-			std::string num_str = num_char;
-			int num_bt = std::stoi(num_str);
-
-			for(int i = 0; i < num_bt; i++){
-
-				char element_char[100];
-				std::cout << "Enter the" << (i+1) <<"º radio button name: ";
-				std::cin.getline(element_char, 100);
-				std::cout << std::endl;
-				std::string radio_bt = element_char;
-				(app->get_CSVeditor())->insert_line("radio_bt", radio_bt, "!@#$%null", "!@#$%null");
-			}
-
-		}
-		else {
-					std::cout << "Command not found, try \"help\" for more information.\n";
-		}
-	}
-
-	}
-
-}
-
-int main_loop(Application *app){
-
-	char command[256];
+};
 
 
+class View : public UserInterface {
 
-	while(1){
-
-		std::cout << ">> ";
-		std::cin.getline(command, 256);
-//		std::cout << command;
-
-		std::string command_str = command, buf;
-		std::vector<std::string> command_vector;
-		std::stringstream ss(command_str);
-
-
-	    while (ss >> buf){
-	        command_vector.push_back(buf);
-	    }
-
-	    command_handler(command_vector, app);
-	    app->save_project();
-
-	}
-}
-
-int main(int argc, const char * argv[]) {
+private:
+  std::vector<Data> data; 
+  Application *app;
    
-	char name[256];
+public:
+  
+  View() {
 
-	Application *app = new Application();
-	if(argc == 1){
-		std::cout << ">> New Project name: ";
-		std::cin.getline(name, 256);
-		std::string project_name = name;
-		std::cout << ">> File to save project: ";
-		std::cin.getline(name, 256);
-		std::string project_file = name;
+	this->hide_project_settings();
 
-		app->new_project(project_name, project_file);
+    btnClear->callback((Fl_Callback*) cbBtnClear, (void*)(this));
+    btnUpdate->callback((Fl_Callback*) cbBtnUpdate, (void*)(this)); 
+    btnDelete->callback((Fl_Callback*) cbBtnDelete, (void*)(this)); 
+    btnInsert->callback((Fl_Callback*) cbBtnInsert, (void*)(this)); 
+    browser->callback((Fl_Callback*) cbBrowser, (void*)(this));
 
-	}
-	if(argc == 2){
+    //New and Load Project
+    LoadProject->callback((Fl_Callback*) cbLoadProject, (void*)(this));
+    NewProject->callback((Fl_Callback*) cbNewProject, (void*)(this));
+    New_Pro_OK_bt->callback((Fl_Callback*) cbNewProject_OK_bt, (void*)(this));
+    New_Pro_Cancel_bt->callback((Fl_Callback*) cbNewProject_Cancel_bt, (void*)(this));
 
-		std::string project_name = argv[1];
-		app->load_project(project_name);
-		std::cout << ">> In Project \"" << app->get_ProjectName() << "\", file loaded: OK." << std::endl;
-//		(app->get_CSVeditor())->list_commands();
-	}
+    //Radio_bt callbacks
+    Radio_Update_bt->callback((Fl_Callback*) cbRadio_Update_bt, (void*)(this));
+    Radio_cancel_bt->callback((Fl_Callback*) cbRadio_Cancel_bt, (void*)(this));
+    Insert_Radio_bt->callback((Fl_Callback*) cbInsert_Radio_bt, (void*)(this));
+    insert_bt_Radio->callback((Fl_Callback*) cbInsert_bt_Radio, (void*)(this));
 
-	std::thread thread_loop (main_loop, app);
-	thread_loop.join();
+    //Code Generator
+    Generate_Code_bt->callback((Fl_Callback*) cbGenerate_Code_bt, (void*)(this));
+
+    //Set Title
+    Set_title->callback((Fl_Callback*) cbSet_title, (void*)(this));
+    Title_save_bt->callback((Fl_Callback*) cbTitle_save_bt, (void*)(this));
+    Title_cancel_bt->callback((Fl_Callback*) cbTitle_cancel_bt, (void*)(this));
 
 
-    
-    return 0;
+    this->app= new Application();
+    insert_bt_Radio->hide();
+  }
+  
+  void hide_project_settings(void){
+
+
+	  this->inputLabel->hide();
+	  this->inputName->hide();
+	  this->chooser->hide();
+	  this->browser->hide();
+	  this->btnClear->hide();
+	  this->btnDelete->hide();
+	  this->btnInsert->hide();
+	  this->btnUpdate->hide();
+	  this->Title_Project->hide();
+  }
+
+  void show_project_settings(void){
+
+
+	  this->inputLabel->show();
+	  this->inputName->show();
+	  this->chooser->show();
+	  this->browser->show();
+	  this->btnClear->show();
+	  this->btnDelete->show();
+	  this->btnInsert->show();
+	  this->btnUpdate->show();
+	  this->Title_Project->show();
+  }
+
+  void show() {
+    // Mostra janela
+    w->show();
+  }
+  
+  // Funcao callback chamada quando pressionado botao 'Clear'
+  static void cbBtnClear(Fl_Widget* btn, void* userdata) {
+    View* gui = static_cast<View*>(userdata);
+    gui->inputLabel->value("");
+    gui->inputName->value("");
+  }
+
+  // Funcao callback chamada quando pressionado botao 'Insert'
+  static void cbBtnInsert(Fl_Widget* btn, void* userdata) {
+    View* gui = static_cast<View*>(userdata);
+
+    std::string Label_str(gui->inputLabel->value());
+    std::string Name_str(gui->inputName->value());
+    std::string add = "add";
+    std::string text = "text";
+    std::string radio = "radio";
+
+    if(Label_str != "" && Name_str != ""){
+    	int type = gui->chooser->value();
+    	std::string type_str;
+    	switch(type){
+    	case 0: {
+
+    		type_str = "text";
+    		Application* a = gui->app;
+    		(a->get_CSVeditor())->insert_line(add, text, Label_str, Name_str);
+    		gui->browser->add((add + ": " + text + " : " + " : " + Label_str + " : " + Name_str).c_str());
+    		a->save_project();
+
+    		break;
+
+    	}
+    	case 1: {
+
+    		type_str = "radio";
+    		Application* a = gui->app;
+    		(a->get_CSVeditor())->insert_line(add, radio, Label_str, Name_str);
+    		gui->browser->add((add + ": " + radio + " : " + " : " + Label_str + " : " + Name_str).c_str());
+    		a->save_project();
+    		break;
+
+    	}
+    	}
+
+
+    } else fl_alert("Please, insert Label and Name values.");
+
+  }
+
+  // Funcao callback chamada quando selecionada uma linha no Fl_Browser
+  static void cbBrowser(Fl_Widget* btn, void* userdata) {
+    View* gui = static_cast<View*>(userdata);
+    int index = gui->browser->value(); // 1-based index
+
+    if(index != 0){
+
+    	CSV* line = gui->app->get_CSVeditor()->get_line(index);
+
+    	gui->inputLabel->value(line->getLabel().c_str());
+    	gui->inputName->value(line->getName().c_str());
+
+    	if(line->getType() == "text"){
+    		gui->chooser->value(0);
+    	}
+    	else if(line->getType() == "radio"){
+    		gui->chooser->value(1);
+    	}
+
+    	if(line->getCommand() == "radio_bt"){
+
+    		gui->Radio_bt_Window->show();
+    		gui->Radio_bt_1->value(line->getType().c_str());
+    		gui->Radio_bt_2->value(line->getLabel().c_str());
+    		gui->Radio_bt_3->value(line->getName().c_str());
+
+    	}
+
+
+    }
+//    std::cout << "LINHA: " << index << std::endl;
+
+
+  }
+
+  // Funcao callback chamada quando pressionado botao 'Update'
+  static void cbBtnUpdate(Fl_Widget* btn, void* userdata) {
+	  View* gui = static_cast<View*>(userdata);
+	  int index = gui->browser->value(); // 1-based index
+	  if (index != 0 && index > 3) {
+
+	    std::string Label_str(gui->inputLabel->value());
+	    std::string Name_str(gui->inputName->value());
+	    std::string add = "add";
+	    std::string text = "text";
+	    std::string radio = "radio";
+
+	    if(Label_str != "" && Name_str != ""){
+	    	int type = gui->chooser->value();
+	    	std::string type_str;
+	    	switch(type){
+	    	case 0: {
+
+	    		type_str = "text";
+	    		Application* a = gui->app;
+	    		(a->get_CSVeditor())->edit_entire_line(index, add, text, Label_str, Name_str);
+	    		gui->browser->remove(index);
+	    		gui->browser->insert(index, (add + ": " + text + " : " + " : " + Label_str + " : " + Name_str).c_str());
+	    		a->save_project();
+
+	    		break;
+
+	    	}
+	    	case 1: {
+
+	    		type_str = "radio";
+	    		Application* a = gui->app;
+	    		(a->get_CSVeditor())->edit_entire_line(index, add, radio, Label_str, Name_str);
+	    		gui->browser->remove(index);
+	    		gui->browser->insert(index, (add + ": " + radio + " : " + " : " + Label_str + " : " + Name_str).c_str());
+	    		a->save_project();
+	    		break;
+
+	    	}
+	    	}
+
+
+	    } else fl_alert("Please, insert Label and Name values.");
+
+	  }
+	  if (index != 0 && index < 4){
+
+			  fl_alert("Lines 1, 2, 3 can not be edit.");
+		  }
+
+  }
+
+  // Funcao callback chamada quando pressionado botao 'Delete'
+  static void cbBtnDelete(Fl_Widget* btn, void* userdata) {
+	  View* gui = static_cast<View*>(userdata);
+	  int index = gui->browser->value(); // 1-based index
+	  if (index > 3) {
+
+		  gui->app->get_CSVeditor()->delete_line(index);
+		  gui->browser->remove(index);
+		  gui->app->save_project();
+	  }
+
+	  if (index != 0 && index < 4){
+
+		  fl_alert("Lines 1, 2, 3 can not be delete.");
+	  }
+  }
+
+
+
+  // Funcao callback chamada quando pressionado botao 'Load Project'
+   static void cbLoadProject(Fl_Widget* btn, void* userdata) {
+
+	 View* gui = static_cast<View*>(userdata);
+     Fl_File_Chooser* fc = new Fl_File_Chooser(".","CSV Files (*.{csv})",Fl_File_Chooser::SINGLE,"File Browser");
+
+     fc->show();
+     while(fc->shown()) Fl::wait();
+
+     if(fc->value() != nullptr){
+    	 std::string filename = fc->value();
+    	 std::cout << filename << "\n";
+ 		gui->app->load_project(filename);
+// 		std::cout << ">> In Project \"" << gui->app->get_ProjectName() << "\", file loaded: OK." << std::endl;
+ 		gui->Title_Project->value(gui->app->get_ProjectName().c_str());
+ 		gui->show_project_settings();
+     }
+
+     CSV_Editor* editor = gui->app->get_CSVeditor();
+
+     for(auto i = 1 ; i <= editor->getTotalLines(); i++){
+
+    	 CSV* line = editor->get_line(i);
+    	 gui->browser->add((line->getCommand()+" : "+line->getType()+" : "+line->getLabel()+" : "+line->getName()).c_str());
+     }
+
+
+
+   }
+
+   static void cbNewProject(Fl_Widget* btn, void* userdata) {
+
+	   View* gui = static_cast<View*>(userdata);
+	   gui->NewProjectWindow->show();
+
+
+   }
+
+   static void cbNewProject_OK_bt(Fl_Widget* btn, void* userdata) {
+
+	   View* gui = static_cast<View*>(userdata);
+	   std::string project_name = gui->ProjectName_input->value();
+	   std::string project_file = gui->ProjectFile_input->value();
+	   gui->app->new_project(project_name, project_file);
+
+	   std::cout << project_name << " E " << project_file << std::endl;
+	   gui->NewProjectWindow->hide();
+	   gui->show_project_settings();
+	   gui->Title_Project->value(gui->app->get_ProjectName().c_str());
+
+	   CSV_Editor* editor = gui->app->get_CSVeditor();
+
+	     for(auto i = 1 ; i <= editor->getTotalLines(); i++){
+
+	    	 CSV* line = editor->get_line(i);
+	    	 gui->browser->add((line->getCommand()+" : "+line->getType()+" : "+line->getLabel()+" : "+line->getName()).c_str());
+	     }
+
+   }
+
+   static void cbNewProject_Cancel_bt(Fl_Widget* btn, void* userdata) {
+
+	   View* gui = static_cast<View*>(userdata);
+	   gui->NewProjectWindow->hide();
+
+   }
+
+   static void cbRadio_Update_bt(Fl_Widget* btn, void* userdata) {
+
+	   View* gui = static_cast<View*>(userdata);
+	   int index = gui->browser->value(); // 1-based index
+	   std::string radio_bt = "radio_bt";
+
+	   if (index != 0){
+
+			Application* a = gui->app;
+			(a->get_CSVeditor())->edit_entire_line(index, "radio_bt", gui->Radio_bt_1->value(), gui->Radio_bt_2->value(), gui->Radio_bt_3->value());
+			gui->browser->remove(index);
+	 		gui->browser->insert(index, (radio_bt + ": " + gui->Radio_bt_1->value() + " : " + gui->Radio_bt_2->value() + " : " + gui->Radio_bt_3->value()).c_str());
+
+	   }
+
+	   gui->app->save_project();
+	   gui->Radio_bt_Window->hide();
+
+
+   }
+
+   static void cbRadio_Cancel_bt(Fl_Widget* btn, void* userdata) {
+
+	   View* gui = static_cast<View*>(userdata);
+	   gui->Radio_bt_Window->hide();
+
+   }
+
+
+   static void cbGenerate_Code_bt(Fl_Widget* btn, void* userdata) {
+
+	   View* gui = static_cast<View*>(userdata);
+
+	   CSV_Editor* editor = gui->app->get_CSVeditor();
+	   Code_Generator code(editor->get_PageTitle(), editor->get_WebPage_name(), gui->app->get_ProjectFile());
+	   code.write_code();
+
+
+
+   }
+
+   static void cbSet_title(Fl_Widget* btn, void* userdata) {
+
+	   View* gui = static_cast<View*>(userdata);
+	   gui->Title_window->show();
+   }
+
+//   cbTitle_save_bt
+
+   static void cbTitle_save_bt(Fl_Widget* btn, void* userdata) {
+
+	   View* gui = static_cast<View*>(userdata);
+
+	   std::string set = "set";
+	   std::string text = "text";
+	   std::string label1 = "web_page_name";
+	   std::string label2 = "page_title";
+
+
+	   std::string Web_pg_name = gui->Web_page_name->value();
+	   std::string Web_pg_title = gui->Web_page_title->value();
+
+	   gui->app->get_CSVeditor()->edit_line_element(2, 4, Web_pg_name);
+	   gui->app->get_CSVeditor()->edit_line_element(3, 4, Web_pg_title);
+
+	   gui->browser->remove(2);
+	   gui->browser->insert(2, (set + ": " + text + " : " + label1 + " : " + Web_pg_name).c_str());
+
+	   gui->browser->remove(3);
+	   gui->browser->insert(3, (set + ": " + text + " : " + label2 + " : " + Web_pg_title).c_str());
+
+	   gui->app->save_project();
+
+
+	   gui->Title_window->hide();
+   }
+
+   static void cbTitle_cancel_bt(Fl_Widget* btn, void* userdata) {
+
+	   View* gui = static_cast<View*>(userdata);
+	   gui->Title_window->hide();
+   }
+
+
+   static void cbInsert_Radio_bt(Fl_Widget* btn, void* userdata) {
+
+	   View* gui = static_cast<View*>(userdata);
+	   gui->Radio_bt_Window->show();
+	   gui->insert_bt_Radio->show();
+   }
+
+   static void cbInsert_bt_Radio(Fl_Widget* btn, void* userdata) {
+
+	   View* gui = static_cast<View*>(userdata);
+	   std::string radio_bt = "radio_bt";
+
+	   gui->Radio_bt_1->value("#null#");
+	   gui->Radio_bt_2->value("#null#");
+	   gui->Radio_bt_3->value("#null#");
+
+
+	   Application* a = gui->app;
+	   (a->get_CSVeditor())->insert_line("radio_bt", gui->Radio_bt_1->value(), gui->Radio_bt_2->value(), gui->Radio_bt_3->value());
+	   gui->browser->add((radio_bt + ": " + gui->Radio_bt_1->value() + " : " + gui->Radio_bt_2->value() + " : " + gui->Radio_bt_3->value()).c_str());
+	   gui->app->save_project();
+
+	   gui->insert_bt_Radio->hide();
+	   gui->Radio_bt_Window->hide();
+
+   }
+
+
+
+};
+
+int main() {
+  View gui;
+  gui.show();
+  return Fl::run();
 }
+
+
